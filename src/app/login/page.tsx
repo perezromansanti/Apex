@@ -27,7 +27,7 @@ export default function LoginPage() {
 
   return (
     <main className="mx-auto flex min-h-screen max-w-sm flex-col justify-center gap-4 px-4">
-      <h1 className="text-2xl font-semibold">Club deportivo</h1>
+      <h1 className="text-2xl font-semibold">Apex</h1>
       {enviado ? (
         <p>Revisa tu email, te hemos enviado un enlace de acceso.</p>
       ) : (
