@@ -29,7 +29,6 @@ export async function updateSession(request: NextRequest) {
 
   const isAuthRoute =
     request.nextUrl.pathname.startsWith("/login") ||
-    request.nextUrl.pathname.startsWith("/registro") ||
     request.nextUrl.pathname.startsWith("/auth");
   const isPublicAsset = request.nextUrl.pathname.startsWith("/_next");
 

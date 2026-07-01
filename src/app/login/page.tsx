@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -27,7 +26,7 @@ export default function LoginPage() {
     if (error) {
       setError(
         error.message.includes("Signups not allowed")
-          ? "No encontramos esa cuenta. ¿Aún no te has registrado?"
+          ? "No encontramos esa cuenta. Pide a un admin que te invite."
           : error.message
       );
       return;
@@ -86,10 +85,7 @@ export default function LoginPage() {
         )}
 
         <p className="mt-8 text-sm text-zinc-500">
-          ¿Aún no tienes cuenta?{" "}
-          <Link href="/registro" className="text-ink underline">
-            Regístrate
-          </Link>
+          ¿Aún no tienes cuenta? Pide a un admin del club que te invite.
         </p>
       </div>
     </main>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Plus } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function UsuariosPage() {
@@ -11,7 +11,18 @@ export default async function UsuariosPage() {
 
   return (
     <>
-      <h1 className="text-2xl font-bold">Usuarios ({usuarios?.length ?? 0})</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">
+          Usuarios ({usuarios?.length ?? 0})
+        </h1>
+        <Link
+          href="/admin/usuarios/invitar"
+          className="flex items-center gap-1.5 border border-ink px-3 py-1.5 text-xs uppercase tracking-[0.1em] transition-colors hover:bg-ink hover:text-paper"
+        >
+          <Plus size={14} />
+          Invitar
+        </Link>
+      </div>
       <ul className="mt-8 divide-y divide-line border-t border-line">
         {(usuarios ?? []).map((u) => (
           <li key={u.id}>
