@@ -1,6 +1,7 @@
+import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 
-export async function getCurrentUser() {
+export const getCurrentUser = cache(async () => {
   const supabase = await createClient();
   const { data: authData } = await supabase.auth.getUser();
   if (!authData.user) return null;
@@ -12,7 +13,7 @@ export async function getCurrentUser() {
     .single();
 
   return perfil;
-}
+});
 
 export async function requireAdmin() {
   const user = await getCurrentUser();

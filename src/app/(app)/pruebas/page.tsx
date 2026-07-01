@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/auth";
 import { InscripcionButton } from "./inscripcion-button";
@@ -31,7 +32,9 @@ export default async function PruebasPage() {
               className="flex items-center justify-between rounded border p-4"
             >
               <div>
-                <p className="font-medium">{prueba.nombre}</p>
+                <Link href={`/pruebas/${prueba.id}`} className="font-medium underline">
+                  {prueba.nombre}
+                </Link>
                 <p className="text-sm text-zinc-600">
                   {new Date(prueba.fecha).toLocaleDateString("es-ES")} ·
                   inscripción hasta{" "}

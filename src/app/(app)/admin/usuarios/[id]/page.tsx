@@ -1,5 +1,4 @@
-import { notFound, redirect } from "next/navigation";
-import { requireAdmin } from "@/lib/auth";
+import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { UsuarioForm } from "./usuario-form";
 
@@ -8,12 +7,6 @@ export default async function EditarUsuarioPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  try {
-    await requireAdmin();
-  } catch {
-    redirect("/pruebas");
-  }
-
   const { id } = await params;
   const supabase = await createClient();
   const { data: usuario } = await supabase
@@ -25,11 +18,11 @@ export default async function EditarUsuarioPage({
   if (!usuario) notFound();
 
   return (
-    <main className="mx-auto max-w-md px-4 py-10">
+    <div className="mx-auto max-w-md">
       <h1 className="mb-6 text-2xl font-semibold">
         {usuario.nombre} {usuario.apellido}
       </h1>
       <UsuarioForm usuario={usuario} />
-    </main>
+    </div>
   );
 }

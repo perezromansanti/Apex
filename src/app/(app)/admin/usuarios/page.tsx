@@ -1,15 +1,7 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { requireAdmin } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function UsuariosPage() {
-  try {
-    await requireAdmin();
-  } catch {
-    redirect("/pruebas");
-  }
-
   const supabase = await createClient();
   const { data: usuarios } = await supabase
     .from("users")
@@ -17,13 +9,10 @@ export default async function UsuariosPage() {
     .order("apellido", { ascending: true });
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-10">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Usuarios ({usuarios?.length ?? 0})</h1>
-        <Link href="/admin" className="text-sm underline">
-          ← Pruebas
-        </Link>
-      </div>
+    <>
+      <h1 className="mb-6 text-2xl font-semibold">
+        Usuarios ({usuarios?.length ?? 0})
+      </h1>
       <ul className="flex flex-col gap-2">
         {(usuarios ?? []).map((u) => (
           <li key={u.id}>
@@ -57,6 +46,6 @@ export default async function UsuariosPage() {
           <p className="text-zinc-500">No hay usuarios todavía.</p>
         )}
       </ul>
-    </main>
+    </>
   );
 }

@@ -1,5 +1,4 @@
-import { notFound, redirect } from "next/navigation";
-import { requireAdmin } from "@/lib/auth";
+import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { PruebaForm } from "../prueba-form";
 
@@ -8,12 +7,6 @@ export default async function EditarPruebaPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  try {
-    await requireAdmin();
-  } catch {
-    redirect("/pruebas");
-  }
-
   const { id } = await params;
   const supabase = await createClient();
 
@@ -32,7 +25,7 @@ export default async function EditarPruebaPage({
     .order("created_at", { ascending: true });
 
   return (
-    <main className="mx-auto max-w-md px-4 py-10">
+    <div className="mx-auto max-w-md">
       <h1 className="mb-6 text-2xl font-semibold">Editar prueba</h1>
       <PruebaForm
         initial={{
@@ -85,6 +78,6 @@ export default async function EditarPruebaPage({
           )}
         </ul>
       </div>
-    </main>
+    </div>
   );
 }
