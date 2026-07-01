@@ -27,7 +27,7 @@ export async function GET(
 
   const { data: inscripciones, error } = await supabase
     .from("inscripciones")
-    .select("created_at, users(nombre, apellido, email)")
+    .select("created_at, users(nombre, apellido, email, categoria, dorsal)")
     .eq("prueba_id", id)
     .order("created_at", { ascending: true });
 
@@ -36,16 +36,20 @@ export async function GET(
   }
 
   const filas = [
-    ["nombre", "apellido", "email", "fecha_inscripcion"],
+    ["dorsal", "nombre", "apellido", "categoria", "email", "fecha_inscripcion"],
     ...(inscripciones ?? []).map((i) => {
       const socio = i.users as unknown as {
         nombre: string;
         apellido: string;
         email: string;
+        categoria: string | null;
+        dorsal: number | null;
       } | null;
       return [
+        socio?.dorsal != null ? String(socio.dorsal) : "",
         socio?.nombre ?? "",
         socio?.apellido ?? "",
+        socio?.categoria ?? "",
         socio?.email ?? "",
         new Date(i.created_at).toISOString(),
       ];

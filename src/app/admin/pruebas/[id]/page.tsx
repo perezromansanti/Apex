@@ -27,7 +27,7 @@ export default async function EditarPruebaPage({
 
   const { data: inscripciones } = await supabase
     .from("inscripciones")
-    .select("id, created_at, users(nombre, apellido, email)")
+    .select("id, created_at, users(nombre, apellido, email, categoria, dorsal)")
     .eq("prueba_id", id)
     .order("created_at", { ascending: true });
 
@@ -65,10 +65,18 @@ export default async function EditarPruebaPage({
               nombre: string;
               apellido: string;
               email: string;
+              categoria: string | null;
+              dorsal: number | null;
             } | null;
             return (
               <li key={i.id} className="rounded border px-3 py-2 text-sm">
-                {socio?.nombre} {socio?.apellido} — {socio?.email}
+                {socio?.dorsal != null && (
+                  <span className="mr-2 font-mono text-zinc-500">
+                    #{socio.dorsal}
+                  </span>
+                )}
+                {socio?.nombre} {socio?.apellido}
+                {socio?.categoria && ` — ${socio.categoria}`} — {socio?.email}
               </li>
             );
           })}

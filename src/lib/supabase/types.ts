@@ -10,6 +10,8 @@ export interface Database {
           apellido: string;
           email: string;
           rol: Rol;
+          categoria: string | null;
+          dorsal: number | null;
         };
         Insert: {
           id: string;
@@ -17,12 +19,16 @@ export interface Database {
           apellido: string;
           email: string;
           rol?: Rol;
+          categoria?: string | null;
+          dorsal?: number | null;
         };
         Update: Partial<{
           nombre: string;
           apellido: string;
           email: string;
           rol: Rol;
+          categoria: string | null;
+          dorsal: number | null;
         }>;
         Relationships: [];
       };

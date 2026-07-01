@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
@@ -16,10 +17,15 @@ export default function LoginPage() {
       email,
       options: {
         emailRedirectTo: `${window.location.origin}/auth/callback`,
+        shouldCreateUser: false,
       },
     });
     if (error) {
-      setError(error.message);
+      setError(
+        error.message.includes("Signups not allowed")
+          ? "No encontramos esa cuenta. ¿Aún no te has registrado?"
+          : error.message
+      );
       return;
     }
     setEnviado(true);
@@ -49,6 +55,12 @@ export default function LoginPage() {
           {error && <p className="text-sm text-red-600">{error}</p>}
         </form>
       )}
+      <p className="text-sm text-zinc-500">
+        ¿Aún no tienes cuenta?{" "}
+        <Link href="/registro" className="underline">
+          Regístrate
+        </Link>
+      </p>
     </main>
   );
 }
