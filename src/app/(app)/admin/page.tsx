@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight, Plus } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function AdminPage() {
@@ -10,33 +11,41 @@ export default async function AdminPage() {
 
   return (
     <>
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Pruebas (admin)</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Pruebas</h1>
         <Link
           href="/admin/pruebas/nueva"
-          className="rounded bg-black px-3 py-1.5 text-sm text-white"
+          className="flex items-center gap-1.5 border border-ink px-3 py-1.5 text-xs uppercase tracking-[0.1em] transition-colors hover:bg-ink hover:text-paper"
         >
-          Nueva prueba
+          <Plus size={14} />
+          Nueva
         </Link>
       </div>
-      <ul className="flex flex-col gap-3">
+
+      <ul className="mt-8 divide-y divide-line border-t border-line">
         {(pruebas ?? []).map((prueba) => (
           <li key={prueba.id}>
             <Link
               href={`/admin/pruebas/${prueba.id}`}
-              className="flex items-center justify-between rounded border p-4 hover:bg-zinc-50"
+              className="group flex items-center justify-between py-4"
             >
               <div>
                 <p className="font-medium">{prueba.nombre}</p>
-                <p className="text-sm text-zinc-600">
+                <p className="text-sm text-zinc-500">
                   {new Date(prueba.fecha).toLocaleDateString("es-ES")}
                 </p>
               </div>
+              <ArrowRight
+                size={16}
+                className="text-zinc-300 transition-transform group-hover:translate-x-1 group-hover:text-ink"
+              />
             </Link>
           </li>
         ))}
         {(pruebas ?? []).length === 0 && (
-          <p className="text-zinc-500">No hay pruebas creadas.</p>
+          <p className="py-10 text-sm text-zinc-500">
+            No hay pruebas creadas.
+          </p>
         )}
       </ul>
     </>

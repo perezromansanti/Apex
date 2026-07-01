@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { ArrowRight } from "lucide-react";
+import { Field, TextareaField } from "@/components/field";
 
 type PruebaFormValues = {
   id?: string;
@@ -53,29 +55,23 @@ export function PruebaForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <label className="flex flex-col gap-1 text-sm">
-        Nombre
-        <input
-          required
-          value={values.nombre}
-          onChange={(e) => setValues({ ...values, nombre: e.target.value })}
-          className="rounded border px-3 py-2"
-        />
-      </label>
-      <label className="flex flex-col gap-1 text-sm">
-        Fecha de la prueba
-        <input
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+      <Field
+        label="Nombre"
+        required
+        value={values.nombre}
+        onChange={(e) => setValues({ ...values, nombre: e.target.value })}
+      />
+      <div className="grid grid-cols-2 gap-4">
+        <Field
+          label="Fecha"
           type="date"
           required
           value={values.fecha}
           onChange={(e) => setValues({ ...values, fecha: e.target.value })}
-          className="rounded border px-3 py-2"
         />
-      </label>
-      <label className="flex flex-col gap-1 text-sm">
-        Fecha límite de inscripción
-        <input
+        <Field
+          label="Plazo inscripción"
           type="datetime-local"
           required
           value={values.fecha_limite_inscripcion}
@@ -85,26 +81,27 @@ export function PruebaForm({
               fecha_limite_inscripcion: e.target.value,
             })
           }
-          className="rounded border px-3 py-2"
         />
-      </label>
-      <label className="flex flex-col gap-1 text-sm">
-        Descripción
-        <textarea
-          value={values.descripcion}
-          onChange={(e) =>
-            setValues({ ...values, descripcion: e.target.value })
-          }
-          className="rounded border px-3 py-2"
-        />
-      </label>
+      </div>
+      <TextareaField
+        label="Descripción"
+        rows={3}
+        value={values.descripcion}
+        onChange={(e) =>
+          setValues({ ...values, descripcion: e.target.value })
+        }
+      />
       {error && <p className="text-sm text-red-600">{error}</p>}
       <button
         type="submit"
         disabled={loading}
-        className="rounded bg-black px-3 py-2 text-white disabled:opacity-50"
+        className="group flex items-center justify-between border border-ink px-4 py-3 text-sm font-medium transition-colors hover:bg-ink hover:text-paper disabled:opacity-40"
       >
         Guardar
+        <ArrowRight
+          size={16}
+          className="transition-transform group-hover:translate-x-1"
+        />
       </button>
     </form>
   );

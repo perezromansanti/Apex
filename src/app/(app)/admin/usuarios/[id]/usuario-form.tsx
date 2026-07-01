@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { ArrowRight } from "lucide-react";
+import { Field, SelectField } from "@/components/field";
 
 type Usuario = {
   id: string;
@@ -70,89 +72,81 @@ export function UsuarioForm({ usuario }: { usuario: Usuario }) {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+    <div className="flex flex-col gap-10">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <p className="text-sm text-zinc-500">{usuario.email}</p>
-        <label className="flex flex-col gap-1 text-sm">
-          Nombre
-          <input
+        <div className="grid grid-cols-2 gap-4">
+          <Field
+            label="Nombre"
             required
             value={values.nombre}
             onChange={(e) => setValues({ ...values, nombre: e.target.value })}
-            className="rounded border px-3 py-2"
           />
-        </label>
-        <label className="flex flex-col gap-1 text-sm">
-          Apellido
-          <input
+          <Field
+            label="Apellido"
             required
             value={values.apellido}
             onChange={(e) =>
               setValues({ ...values, apellido: e.target.value })
             }
-            className="rounded border px-3 py-2"
           />
-        </label>
-        <label className="flex flex-col gap-1 text-sm">
-          Categoría
-          <input
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <Field
+            label="Categoría"
             value={values.categoria}
             onChange={(e) =>
               setValues({ ...values, categoria: e.target.value })
             }
-            className="rounded border px-3 py-2"
           />
-        </label>
-        <label className="flex flex-col gap-1 text-sm">
-          Dorsal
-          <input
+          <Field
+            label="Dorsal"
             type="number"
             min={1}
             value={values.dorsal}
             onChange={(e) => setValues({ ...values, dorsal: e.target.value })}
-            className="rounded border px-3 py-2"
           />
-        </label>
-        <label className="flex flex-col gap-1 text-sm">
-          Rol
-          <select
-            value={values.rol}
-            onChange={(e) =>
-              setValues({
-                ...values,
-                rol: e.target.value as "admin" | "socio",
-              })
-            }
-            className="rounded border px-3 py-2"
-          >
-            <option value="socio">socio</option>
-            <option value="admin">admin</option>
-          </select>
-        </label>
+        </div>
+        <SelectField
+          label="Rol"
+          value={values.rol}
+          onChange={(e) =>
+            setValues({ ...values, rol: e.target.value as "admin" | "socio" })
+          }
+        >
+          <option value="socio">socio</option>
+          <option value="admin">admin</option>
+        </SelectField>
         {error && <p className="text-sm text-red-600">{error}</p>}
         <button
           type="submit"
           disabled={loading}
-          className="rounded bg-black px-3 py-2 text-white disabled:opacity-50"
+          className="group flex items-center justify-between border border-ink px-4 py-3 text-sm font-medium transition-colors hover:bg-ink hover:text-paper disabled:opacity-40"
         >
           Guardar
+          <ArrowRight
+            size={16}
+            className="transition-transform group-hover:translate-x-1"
+          />
         </button>
       </form>
 
-      <div className="border-t pt-4">
+      <div className="border-t border-line pt-6">
         {confirmando ? (
-          <div className="flex items-center gap-2">
-            <p className="text-sm">¿Eliminar a {usuario.nombre} definitivamente?</p>
+          <div className="flex items-center gap-3">
+            <p className="text-sm">
+              ¿Eliminar a {usuario.nombre} definitivamente?
+            </p>
             <button
               onClick={handleDelete}
               disabled={loading}
-              className="rounded bg-red-600 px-3 py-1.5 text-sm text-white disabled:opacity-50"
+              className="border border-red-600 px-3 py-1.5 text-xs uppercase tracking-[0.1em] text-red-600 transition-colors hover:bg-red-600 hover:text-paper disabled:opacity-50"
             >
               Sí, eliminar
             </button>
             <button
               onClick={() => setConfirmando(false)}
-              className="rounded border px-3 py-1.5 text-sm"
+              className="border border-line px-3 py-1.5 text-xs uppercase tracking-[0.1em] text-zinc-500"
             >
               Cancelar
             </button>
@@ -160,7 +154,7 @@ export function UsuarioForm({ usuario }: { usuario: Usuario }) {
         ) : (
           <button
             onClick={() => setConfirmando(true)}
-            className="text-sm text-red-600 underline"
+            className="text-xs uppercase tracking-[0.1em] text-red-600 underline"
           >
             Eliminar usuario
           </button>

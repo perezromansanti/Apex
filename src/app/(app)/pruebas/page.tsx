@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { CalendarDays } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/auth";
 import { InscripcionButton } from "./inscripcion-button";
@@ -20,33 +21,47 @@ export default async function PruebasPage() {
   );
 
   return (
-    <main className="mx-auto max-w-2xl px-4 py-10">
-      <h1 className="mb-6 text-2xl font-semibold">Pruebas disponibles</h1>
-      <ul className="flex flex-col gap-4">
-        {(pruebas ?? []).map((prueba) => {
+    <main className="mx-auto max-w-2xl px-6 py-12">
+      <p className="text-xs uppercase tracking-[0.2em] text-zinc-400">
+        Hola, {user.nombre}
+      </p>
+      <h1 className="mt-2 text-3xl font-bold">Pruebas disponibles</h1>
+
+      <ul className="mt-10 divide-y divide-line border-t border-line">
+        {(pruebas ?? []).map((prueba, i) => {
           const plazoVencido =
             new Date(prueba.fecha_limite_inscripcion) < new Date();
           return (
             <li
               key={prueba.id}
-              className="flex items-center justify-between rounded border p-4"
+              style={{ animationDelay: `${i * 60}ms` }}
+              className="rise-in flex items-start justify-between gap-6 py-6"
             >
-              <div>
-                <Link href={`/pruebas/${prueba.id}`} className="font-medium underline">
-                  {prueba.nombre}
-                </Link>
-                <p className="text-sm text-zinc-600">
-                  {new Date(prueba.fecha).toLocaleDateString("es-ES")} ·
-                  inscripción hasta{" "}
-                  {new Date(prueba.fecha_limite_inscripcion).toLocaleDateString(
-                    "es-ES"
-                  )}
-                </p>
-                {prueba.descripcion && (
+              <div className="flex gap-4">
+                <CalendarDays
+                  size={18}
+                  className="mt-1 shrink-0 text-zinc-400"
+                />
+                <div>
+                  <Link
+                    href={`/pruebas/${prueba.id}`}
+                    className="text-lg font-semibold hover:underline"
+                  >
+                    {prueba.nombre}
+                  </Link>
                   <p className="mt-1 text-sm text-zinc-500">
-                    {prueba.descripcion}
+                    {new Date(prueba.fecha).toLocaleDateString("es-ES")} ·
+                    inscripción hasta{" "}
+                    {new Date(
+                      prueba.fecha_limite_inscripcion
+                    ).toLocaleDateString("es-ES")}
                   </p>
-                )}
+                  {prueba.descripcion && (
+                    <p className="mt-2 max-w-md text-sm text-zinc-600">
+                      {prueba.descripcion}
+                    </p>
+                  )}
+                </div>
               </div>
               <InscripcionButton
                 pruebaId={prueba.id}
@@ -57,7 +72,9 @@ export default async function PruebasPage() {
           );
         })}
         {(pruebas ?? []).length === 0 && (
-          <p className="text-zinc-500">No hay pruebas publicadas todavía.</p>
+          <p className="py-10 text-sm text-zinc-500">
+            No hay pruebas publicadas todavía.
+          </p>
         )}
       </ul>
     </main>

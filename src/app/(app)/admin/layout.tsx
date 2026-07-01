@@ -14,9 +14,9 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10">
+    <div className="mx-auto max-w-2xl px-6 py-12">
       <AdminTabs />
-      <div className="mt-6">{children}</div>
+      <div className="mt-10">{children}</div>
     </div>
   );
 }

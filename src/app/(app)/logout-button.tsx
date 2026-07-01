@@ -20,7 +20,7 @@ export function LogoutButton() {
     <button
       onClick={handleLogout}
       disabled={loading}
-      className="w-full rounded px-3 py-1.5 text-left text-sm text-red-600 hover:bg-red-50 disabled:opacity-50"
+      className="w-full px-4 py-3 text-left text-xs uppercase tracking-[0.15em] text-red-600 transition-colors hover:bg-ink hover:text-paper disabled:opacity-50"
     >
       Cerrar sesión
     </button>

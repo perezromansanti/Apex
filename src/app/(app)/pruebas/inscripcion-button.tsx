@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Check } from "lucide-react";
 
 export function InscripcionButton({
   pruebaId,
@@ -28,9 +29,23 @@ export function InscripcionButton({
 
   if (plazoVencido) {
     return (
-      <span className="text-sm text-zinc-500">
-        {inscrito ? "Inscrito (plazo cerrado)" : "Plazo cerrado"}
+      <span className="whitespace-nowrap text-xs uppercase tracking-[0.1em] text-zinc-400">
+        {inscrito ? "Inscrito · plazo cerrado" : "Plazo cerrado"}
       </span>
+    );
+  }
+
+  if (inscrito) {
+    return (
+      <button
+        onClick={toggle}
+        disabled={loading}
+        className="group flex items-center gap-1.5 whitespace-nowrap border border-ink px-3 py-1.5 text-xs uppercase tracking-[0.1em] transition-colors hover:border-red-600 hover:bg-red-600 hover:text-paper disabled:opacity-40"
+      >
+        <Check size={13} className="group-hover:hidden" />
+        <span className="hidden group-hover:inline">Cancelar</span>
+        <span className="group-hover:hidden">Inscrito</span>
+      </button>
     );
   }
 
@@ -38,11 +53,9 @@ export function InscripcionButton({
     <button
       onClick={toggle}
       disabled={loading}
-      className={`rounded px-3 py-1.5 text-sm text-white ${
-        inscrito ? "bg-red-600" : "bg-black"
-      } disabled:opacity-50`}
+      className="whitespace-nowrap border border-ink px-3 py-1.5 text-xs uppercase tracking-[0.1em] transition-colors hover:bg-ink hover:text-paper disabled:opacity-40"
     >
-      {inscrito ? "Cancelar inscripción" : "Inscribirme"}
+      Inscribirme
     </button>
   );
 }

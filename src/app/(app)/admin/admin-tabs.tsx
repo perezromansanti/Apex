@@ -12,7 +12,10 @@ export function AdminTabs() {
   const pathname = usePathname();
 
   return (
-    <nav aria-label="Secciones de administración" className="flex gap-4 border-b">
+    <nav
+      aria-label="Secciones de administración"
+      className="flex gap-8 border-b border-line"
+    >
       {TABS.map((tab) => {
         const active =
           tab.href === "/admin"
@@ -23,10 +26,10 @@ export function AdminTabs() {
             key={tab.href}
             href={tab.href}
             aria-current={active ? "page" : undefined}
-            className={`border-b-2 px-1 pb-2 text-sm ${
+            className={`border-b-2 pb-3 text-xs uppercase tracking-[0.15em] transition-colors ${
               active
-                ? "border-black font-medium"
-                : "border-transparent text-zinc-600"
+                ? "border-ink text-ink"
+                : "border-transparent text-zinc-400 hover:text-ink"
             }`}
           >
             {tab.label}

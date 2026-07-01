@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ChevronDown } from "lucide-react";
 import { LogoutButton } from "./logout-button";
 
 type Usuario = {
@@ -19,16 +20,16 @@ export function NavBar({ user }: { user: Usuario }) {
   }
 
   return (
-    <header className="border-b">
+    <header className="border-b border-line">
       <nav
         aria-label="Navegación principal"
-        className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3"
+        className="mx-auto flex max-w-3xl items-center justify-between px-6 py-5"
       >
-        <div className="flex items-center gap-6">
-          <Link href="/" className="font-semibold">
+        <div className="flex items-center gap-8">
+          <Link href="/" className="font-display text-lg font-bold">
             Apex
           </Link>
-          <ul className="flex items-center gap-4 text-sm">
+          <ul className="flex items-center gap-6">
             {links.map((link) => {
               const active = pathname.startsWith(link.href);
               return (
@@ -36,7 +37,9 @@ export function NavBar({ user }: { user: Usuario }) {
                   <Link
                     href={link.href}
                     aria-current={active ? "page" : undefined}
-                    className={active ? "font-medium" : "text-zinc-600"}
+                    className={`text-xs uppercase tracking-[0.15em] transition-colors ${
+                      active ? "text-ink" : "text-zinc-400 hover:text-ink"
+                    }`}
                   >
                     {link.label}
                   </Link>
@@ -46,11 +49,18 @@ export function NavBar({ user }: { user: Usuario }) {
           </ul>
         </div>
 
-        <details className="relative">
-          <summary className="cursor-pointer list-none rounded border px-3 py-1.5 text-sm">
-            {user.nombre} <span className="text-zinc-500">({user.rol})</span>
+        <details className="group relative">
+          <summary className="flex cursor-pointer list-none items-center gap-1.5 text-sm [&::-webkit-details-marker]:hidden">
+            <span>{user.nombre}</span>
+            <span className="text-xs uppercase tracking-[0.1em] text-zinc-400">
+              {user.rol}
+            </span>
+            <ChevronDown
+              size={14}
+              className="text-zinc-400 transition-transform group-open:rotate-180"
+            />
           </summary>
-          <div className="absolute right-0 z-10 mt-2 w-40 rounded border bg-white shadow-md">
+          <div className="absolute right-0 z-10 mt-3 w-44 border border-ink bg-paper">
             <LogoutButton />
           </div>
         </details>
