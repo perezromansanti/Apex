@@ -102,7 +102,13 @@ security definer
 set search_path = public
 as $$
 begin
-  if new.rol is distinct from old.rol and not public.is_admin() then
+  -- current_user = 'authenticated' solo cuando la llamada viene de la app
+  -- (via PostgREST con JWT de usuario). El SQL Editor corre como 'postgres'
+  -- y los jobs de servidor como 'service_role': ambos deben poder gestionar
+  -- roles sin pasar por is_admin(), que depende de auth.uid() y ahí sería null.
+  if current_user = 'authenticated'
+     and new.rol is distinct from old.rol
+     and not public.is_admin() then
     new.rol := old.rol;
   end if;
   return new;
