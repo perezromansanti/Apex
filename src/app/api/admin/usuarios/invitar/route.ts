@@ -13,28 +13,37 @@ export async function POST(request: Request) {
   const body = await request.json();
   const { nombre, apellido, email, categoria, dorsal, rol } = body;
 
-  const adminClient = createAdminClient();
-  const { data, error } = await adminClient.auth.admin.inviteUserByEmail(
-    email,
-    {
-      data: {
-        nombre,
-        apellido,
-        categoria: categoria || null,
-        dorsal: dorsal ? Number(dorsal) : null,
-      },
-      redirectTo: `${new URL(request.url).origin}/auth/callback`,
+  try {
+    const adminClient = createAdminClient();
+    const { data, error } = await adminClient.auth.admin.inviteUserByEmail(
+      email,
+      {
+        data: {
+          nombre,
+          apellido,
+          categoria: categoria || null,
+          dorsal: dorsal ? Number(dorsal) : null,
+        },
+        redirectTo: `${new URL(request.url).origin}/auth/callback`,
+      }
+    );
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
     }
-  );
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 400 });
+    if (rol === "admin" && data.user) {
+      const supabase = await createClient();
+      await supabase
+        .from("users")
+        .update({ rol: "admin" })
+        .eq("id", data.user.id);
+    }
+
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    console.error("Error invitando usuario:", err);
+    const message = err instanceof Error ? err.message : "Error al invitar";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
-
-  if (rol === "admin" && data.user) {
-    const supabase = await createClient();
-    await supabase.from("users").update({ rol: "admin" }).eq("id", data.user.id);
-  }
-
-  return NextResponse.json({ ok: true });
 }
